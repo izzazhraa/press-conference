@@ -16,7 +16,133 @@
     <!-- Tailwind CSS (via CDN untuk styling responsive) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+
     <style>
+        /* =========================================
+           COVER TEXT - DESAIN BARU
+           ========================================= */
+        
+        .cover-text {
+            position: absolute;
+            top: 30.5%;
+            left: 12%;
+            width: 76%;
+            height: 39%;
+        
+            z-index: 2;
+        
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        
+            text-align: center;
+            color: #1a1a1a;
+        }
+        
+        /* Judul kecil */
+        .cover-undangan {
+            margin: 0 0 12px 0;
+        
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+        
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+        
+            color: #111;
+        }
+        
+        /* Judul utama */
+        .cover-title {
+            margin: 0;
+        
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            line-height: 1.05;
+            font-weight: 700;
+        
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        
+            color: #111;
+        }
+        
+        /* Garis pemisah */
+        .cover-line {
+            width: 55px;
+            height: 2px;
+        
+            margin: 14px 0 18px;
+        
+            background-color: #111;
+        }
+        
+        /* KEPADA YTH */
+        .cover-kepada {
+            margin: 0 0 5px 0;
+        
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+        
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        
+            color: #222;
+        }
+        
+        /* Nama penerima */
+        .cover-recipient {
+            margin: 0 0 22px 0;
+        
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+        
+            color: #111;
+        }
+        
+        /* Tombol akses */
+        .cover-open-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        
+            padding: 10px 20px;
+        
+            border: 1.5px solid #111;
+            border-radius: 30px;
+        
+            background: rgba(255, 255, 255, 0.15);
+        
+            color: #111;
+        
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+        
+            letter-spacing: 0.12em;
+        
+            cursor: pointer;
+        
+            transition: all 0.3s ease;
+        }
+        
+        /* Hover tombol */
+        .cover-open-button:hover {
+            background: #111;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        
+        /* Icon tombol */
+        .cover-open-button i {
+            font-size: 1rem;
+        }
+        
         :root {
             /* Warna diekstrak menyesuaikan nuansa gambar referensi */
             --color-green: #0A4326; 
@@ -336,37 +462,32 @@
         
             <!-- TEKS DI DALAM KOTAK MERAH -->
             <div class="cover-text">
-        
+            
                 <p class="cover-undangan">
                     UNDANGAN
                 </p>
-                <div class="cover-divider"></div>
-                <h1>
-                    PRESS CONFERENCE & TTP
+            
+                <h1 class="cover-title">
+                    PRESS CONFERENCE<br>
+                    & TTP
                 </h1>
-                <h2>
-                    Tiba-Tiba Piknik
-                </h2>
-                <h3>
-                    UNFEST 10
-                </h3>
-        
-                <p class="cover-description">
-                    "Sebuah ajakan untuk berhenti sejenak,<br>
-                    berkumpul, dan tiba-tiba piknik."
-                </p>
+            
+                <div class="cover-line"></div>
+            
                 <p class="cover-kepada">
                     KEPADA YTH.
                 </p>
+            
                 <p id="recipient-name" class="cover-recipient">
-                    Bapak/Ibu/Saudara/i
+                    Rekan Undangan
                 </p>
+            
                 <button onclick="openInvitation()" class="cover-open-button">
                     <i class="ph ph-envelope-open"></i>
-                    BUKA UNDANGAN
+                    <span>BUKA UNDANGAN</span>
                 </button>
+            
             </div>
-        </div>
 
         <!-- HALAMAN ISI (SCROLLABLE) -->
         <div id="main-content">
