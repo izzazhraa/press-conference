@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Undangan Press Conference & TTP - UNFEST 10</title>
+    
+    <!-- Google Fonts: Cormorant Garamond (Serif Elegant) & Montserrat (Sans-Serif Clean) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS (via CDN untuk styling responsive) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            /* Warna diekstrak menyesuaikan nuansa gambar referensi */
+            --color-green: #0A4326; 
+            --color-red: #D12229;
+            --color-gold: #F6B828;
+            --color-cream: #FFFDF6;
+            --color-dark: #2C2C2C;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-red); /* Background luar container diubah menjadi merah */
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .font-serif-elegant {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Container utama: Di HP full layr, di laptop ditengah menyerupai HP */
+        .app-container {
+            max-width: 480px; 
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            background-color: var(--color-green);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            overflow: hidden; /* Mencegah elemen keluar batas */
+        }
+
+        /* Latar belakang yang fix dan menyesuaikan ukuran container */
+        .bg-main {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            /* GANTI NAMA FILE GAMBAR DI SINI JIKA PERLU */
+            background-image: url('BACKGROUND UNDANGAN POTRAIT.jpg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        /* Overlay tipis agar teks di atas background merah lebih terbaca */
+        .bg-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Halaman Cover (Fullscreen di atas segalanya) */
+        #cover-page {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease;
+            backdrop-filter: blur(2px);
+            background-color: rgba(209, 34, 41, 0.3); /* Sedikit hint merah */
+        }
+
+        #cover-page.opened {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Area Konten Utama (Scrollable) */
+        #main-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: none; /* Disembunyikan sebelum tombol buka ditekan */
+            padding-top: 15vh; /* Ruang kosong di atas agar tidak menutupi kipas */
+            padding-bottom: 20vh; /* Ruang kosong di bawah agar tidak menutupi gedung */
+        }
+
+        #main-content.visible {
+            display: block;
+            animation: fadeInContent 1.5s ease forwards;
+        }
+
+        /* Sembunyikan scrollbar untuk estetika */
+        #main-content::-webkit-scrollbar { display: none; }
+        #main-content { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Kartu Konten (Menyerupai kertas undangan fisik) */
+        .content-card {
+            background-color: rgba(255, 253, 246, 0.95); /* Cream transparansi */
+            border: 2px solid var(--color-gold);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            margin: 0 1.5rem 2.5rem 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Varian Kartu Hijau Gelap */
+        .content-card.dark-variant {
+            background-color: rgba(10, 67, 38, 0.95);
+            color: var(--color-cream);
+        }
+
+        /* Tombol Elegan */
+        .btn-elegant {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-green);
+            color: var(--color-cream);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 1rem 2rem;
+            border: 1px solid var(--color-gold);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+        }
+
+        .btn-elegant:hover {
+            background-color: var(--color-gold);
+            color: var(--color-green);
+            transform: translateY(-2px);
+        }
+        
+        .btn-gold {
+            background-color: var(--color-gold);
+            color: var(--color-green);
+            border-color: var(--color-green);
+        }
+
+        /* Timeline Rundown */
+        .timeline-container {
+            position: relative;
+            padding: 1rem 0;
+            text-align: left;
+        }
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--color-gold);
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 1.1rem;
+            top: 0.2rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--color-green);
+            border: 2px solid var(--color-gold);
+            z-index: 2;
+        }
+
+        /* Form Input */
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(10, 67, 38, 0.3);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 1rem;
+            color: var(--color-dark);
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-gold);
+            box-shadow: 0 0 0 2px rgba(246, 184, 40, 0.2);
+        }
+
+        /* Floating Music Button */
+        #music-btn {
+            position: absolute; /* Terikat pada app-container */
+            bottom: 2rem;
+            right: 1.5rem;
+            width: 45px;
+            height: 45px;
+            background-color: var(--color-green);
+            border: 2px solid var(--color-gold);
+            border-radius: 50%;
+            display: none; /* Muncul setelah dibuka */
+            align-items: center;
+            justify-content: center;
+            color: var(--color-gold);
+            font-size: 1.2rem;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        #music-btn.visible { display: flex; animation: spinSlow 5s linear infinite; }
+        #music-btn.paused { animation: none; background-color: var(--color-red); color: white;}
+
+        /* Animations */
+        @keyframes fadeInContent { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes spinSlow { 100% { transform: rotate(360deg); } }
+        
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Utility */
+        .text-gold { color: var(--color-gold); }
+        .text-green { color: var(--color-green); }
+        .text-red { color: var(--color-red); }
+    </style>
+</head>
+<body>
+
+    <!-- AUDIO BACKGROUND -->
+    <!-- GANTI FILE MUSIK DI SINI (Ubah atribut src) -->
+    <audio id="bg-audio" loop preload="auto">
+        <!-- Placeholder music, ganti dengan file MP3 Anda -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=gamelan-bali-traditional-music-111425.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="app-container">
+        
+        <!-- Gambar Latar Belakang Tetap -->
+        <div class="bg-main"></div>
+        <div class="bg-overlay"></div>
+
+        <!-- Tombol Musik -->
+        <div id="music-btn" onclick="toggleMusic()">
+            <i class="ph-fill ph-music-notes" id="music-icon"></i>
+        </div>
+
+        <!-- HALAMAN COVER -->
+        <div id="cover-page">
+            <div class="content-card dark-variant" style="margin: 0; width: 100%; max-width: 320px; border: 2px solid var(--color-gold);">
+                <p class="text-xs tracking-[0.3em] text-gold font-semibold mb-2 uppercase">Undangan</p>
+                <div class="w-12 h-px bg-[var(--color-gold)] mx-auto mb-4"></div>
+                
+                <h1 class="font-serif-elegant text-3xl font-bold text-cream leading-tight mb-1">PRESS CONFERENCE & TTP</h1>
+                <h2 class="font-serif-elegant text-4xl font-bold text-gold mb-4">Tiba-Tiba Piknik</h2>
+                <h3 class="text-sm tracking-[0.4em] font-bold text-cream mb-6">UNFEST 10</h3>
+                
+                <p class="text-xs text-cream opacity-80 mb-8 italic">
+                    "Sebuah ajakan untuk berhenti sejenak, berkumpul, dan tiba-tiba piknik."
+                </p>
+                
+                <div class="mb-8">
+                    <p class="text-[10px] uppercase tracking-widest text-cream opacity-70 mb-2">Kepada Yth.</p>
+                    <!-- MENGAMBIL NAMA PENERIMA DARI URL -->
+                    <div class="inline-block border-b border-gold pb-1 px-4">
+                        <p id="recipient-name" class="font-serif-elegant text-2xl font-bold text-gold">Bapak/Ibu/Saudara/i</p>
+                    </div>
+                </div>
+
+                <button onclick="openInvitation()" class="btn-elegant btn-gold w-full">
+                    <i class="ph ph-envelope-open mr-2 text-lg"></i> Buka Undangan
+                </button>
+            </div>
+        </div>
+
+        <!-- HALAMAN ISI (SCROLLABLE) -->
+        <div id="main-content">
+            
+            <!-- SECTION 1: SAMBUTAN -->
+            <div class="content-card fade-up">
+                <i class="ph-fill ph-flower-lotus text-gold text-3xl mb-3"></i>
+                <h2 class="font-serif-elegant text-2xl font-bold text-red mb-1">PRESS CONFERENCE & TTP</h2>
+                <h3 class="font-serif-elegant text-xl font-bold text-green mb-6 border-b border-gold pb-4 inline-block">Tiba-Tiba Piknik</h3>
+                
+                <p class="text-sm leading-relaxed text-gray-800 mb-4">
+                    Dalam rangka menyambut Tiba-Tiba Piknik – UNFEST 10, kami dengan hangat mengundang rekan-rekan media dan relasi:
+                </p>
+                
+                <!-- MENAMPILKAN NAMA PENERIMA DI DALAM -->
+                <p id="inner-recipient-name" class="font-serif-elegant text-xl font-bold text-green mb-4 bg-[rgba(246,184,40,0.1)] py-2 rounded">
+                    Bapak/Ibu/Saudara/i
+                </p>
+
+                <p class="text-sm leading-relaxed text-gray-800">
+                    Untuk hadir, duduk bersama, menikmati suasana, dan merayakan rangkaian acara pembuka dari kemeriahan UNFEST 10.
+                </p>
+            </div>
+
+            <!-- SECTION 2: DETAIL ACARA -->
+            <div class="content-card dark-variant fade-up">
+                <h2 class="font-serif-elegant text-2xl font-bold text-gold mb-6 tracking-widest border-b border-[rgba(246,184,40,0.3)] pb-2">DETAIL ACARA</h2>
+                
+                <div class="flex flex-col gap-6">
+                    <!-- GANTI TANGGAL DI SINI -->
+                    <div>
+                        <i class="ph-fill ph-calendar-check text-gold text-3xl mb-1"></i>
+                        <p class="text-xs uppercase tracking-widest opacity-80 mb-1">Tanggal</p>
+                        <p class="font-serif-elegant text-2xl font-bold text-cream">Sabtu, 22 Agustus 2026</p>
+                    </div>
+                    
+                    <!-- GANTI WAKTU DI SINI -->
+                    <div>
+                        <i class="ph-fill ph-clock text-gold text-3xl mb-1"></i>
+                        <p class="text-xs uppercase tracking-widest opacity-80 mb-1">Waktu</p>
+                        <p class="font-serif-elegant text-2xl font-bold text-cream">13.30 WIB - Selesai</p>
+                    </div>
+
+                    <!-- GANTI LOKASI DI SINI -->
+                    <div>
+                        <i class="ph-fill ph-map-pin text-gold text-3xl mb-1"></i>
+                        <p class="text-xs uppercase tracking-widest opacity-80 mb-1">Lokasi</p>
+                        <p class="font-serif-elegant text-2xl font-bold text-cream mb-1">Bukit Diponegoro</p>
+                        <p class="text-sm opacity-90 mb-6">Area Taman Selatan, Jakarta</p>
+                        
+                        <!-- GANTI LINK GOOGLE MAPS DI SINI -->
+                        <a href="https://maps.google.com" target="_blank" class="btn-elegant btn-gold w-full">
+                            <i class="ph-fill ph-map-trifold mr-2 text-lg"></i> Lihat Lokasi
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: RUNDOWN -->
+            <div class="content-card fade-up">
+                <h2 class="font-serif-elegant text-2xl font-bold text-green mb-6 tracking-widest">RUNDOWN ACARA</h2>
+                
+                <div class="timeline-container">
+                    <!-- Item Rundown 1 -->
+                    <div class="timeline-item">
+                        <p class="font-serif-elegant text-xl font-bold text-red leading-none">13.45</p>
+                        <h4 class="font-bold text-green text-sm mt-1">Registrasi & Welcome</h4>
+                        <p class="text-xs text-gray-600 mt-1">Gelar tikar dan nikmati suasana.</p>
+                    </div>
+                    
+                    <!-- Item Rundown 2 -->
+                    <div class="timeline-item">
+                        <p class="font-serif-elegant text-xl font-bold text-red leading-none">14.30</p>
+                        <h4 class="font-bold text-green text-sm mt-1">Press Conference UNFEST 10</h4>
+                        <p class="text-xs text-gray-600 mt-1">Pemaparan acara & sesi tanya jawab.</p>
+                    </div>
+                    
+                    <!-- Item Rundown 3 -->
+                    <div class="timeline-item">
+                        <p class="font-serif-elegant text-xl font-bold text-red leading-none">15.00</p>
+                        <h4 class="font-bold text-green text-sm mt-1">Tiba-Tiba Piknik Vol 4</h4>
+                        <p class="text-xs text-gray-600 mt-1">Makan bersama dan networking.</p>
+                    </div>
+
+                    <!-- Item Rundown 4 -->
+                    <div class="timeline-item">
+                        <p class="font-serif-elegant text-xl font-bold text-red leading-none">16.50</p>
+                        <h4 class="font-bold text-green text-sm mt-1">Penampilan Spesial</h4>
+                        <p class="text-xs text-gray-600 mt-1">Sesi hiburan penutup sore.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: FOR MEDIA & RELATIONS -->
+            <div class="content-card dark-variant fade-up">
+                <i class="ph-fill ph-microphone-stage text-gold text-4xl mb-3"></i>
+                <h2 class="font-serif-elegant text-2xl font-bold text-gold mb-2 tracking-widest">MEDIA & RELATIONS</h2>
+                <p class="text-sm opacity-90 mb-6">
+                    Untuk informasi lebih lanjut mengenai Press Release, Asset Media, atau kebutuhan wawancara khusus, silakan menghubungi narahubung kami.
+                </p>
+                <!-- GANTI NOMOR WHATSAPP DI SINI (Format: 628...) -->
+                <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20bertanya%20seputar%20Press%20Conf%20UNFEST%2010" target="_blank" class="btn-elegant w-full bg-[#25D366] border-[#25D366] hover:bg-white hover:text-[#25D366]">
+                    <i class="ph-fill ph-whatsapp-logo mr-2 text-xl"></i> Hubungi Panitia
+                </a>
+            </div>
+
+            <!-- SECTION 5: RSVP -->
+            <div class="content-card fade-up">
+                <h2 class="font-serif-elegant text-3xl font-bold text-red mb-2">RSVP</h2>
+                <p class="text-xs text-gray-600 mb-6 font-medium">
+                    Mohon konfirmasi kehadiran Anda untuk membantu kami mempersiapkan acara (keranjang piknik & konsumsi) dengan sebaik-baiknya.
+                </p>
+
+                <form id="rsvp-form" onsubmit="submitRSVP(event)">
+                    <input type="text" id="name" class="form-input" placeholder="Nama Lengkap" required>
+                    <input type="text" id="media" class="form-input" placeholder="Institusi / Media" required>
+                    <input type="tel" id="whatsapp" class="form-input" placeholder="Nomor WhatsApp" required>
+                    
+                    <select id="attendance" class="form-input" required>
+                        <option value="" disabled selected>Konfirmasi Kehadiran</option>
+                        <option value="hadir">Akan Hadir</option>
+                        <option value="tidak">Tidak Hadir</option>
+                    </select>
+
+                    <input type="number" id="pax" class="form-input" placeholder="Jumlah orang yang hadir (mis: 2)" min="1" max="5">
+                    
+                    <textarea id="notes" class="form-input" rows="3" placeholder="Catatan Tambahan (Opsional)"></textarea>
+
+                    <button type="submit" class="btn-elegant w-full mt-2">
+                        Konfirmasi Kehadiran
+                    </button>
+                </form>
+                
+                <!-- Pesan Sukses (Tersembunyi) -->
+                <div id="rsvp-success" class="hidden mt-4 p-3 bg-[#e8f5e9] text-[#2e7d32] rounded border border-[#c8e6c9] text-sm font-semibold">
+                    <i class="ph-fill ph-check-circle mr-1 align-middle text-lg"></i> Terima kasih, konfirmasi kehadiran Anda telah diterima.
+                </div>
+            </div>
+
+            <!-- SECTION 6: PENUTUP -->
+            <div class="content-card mb-8 fade-up text-center border-none shadow-none bg-transparent" style="background-color: transparent; backdrop-filter: none;">
+                <div class="bg-[rgba(255,253,246,0.95)] rounded-full w-20 h-20 mx-auto flex items-center justify-center border-2 border-gold mb-4 shadow-lg">
+                    <i class="ph-fill ph-picnic-basket text-red text-4xl"></i>
+                </div>
+                <h2 class="font-serif-elegant text-xl font-bold text-cream mb-1 shadow-sm" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.8);">SEE YOU AT</h2>
+                <h2 class="font-serif-elegant text-4xl font-bold text-gold mb-2 shadow-sm" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Tiba-Tiba Piknik</h2>
+                <p class="text-sm font-bold tracking-[0.3em] text-cream mb-6" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">UNFEST 10</p>
+                <p class="text-xs text-cream opacity-90 italic">Terima kasih atas perhatian dan kesediaan Anda untuk hadir.</p>
+            </div>
+
+        </div> <!-- End of main-content -->
+    </div> <!-- End of app-container -->
+
+    <script>
+        // MENGAMBIL NAMA PENERIMA DARI URL (Parameter ?to=Nama)
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const rawName = urlParams.get('to');
+            
+            // Format teks penerima
+            const recipientName = rawName ? decodeURIComponent(rawName) : 'Rekan Undangan';
+            
+            // Masukkan ke elemen HTML (Cover & Isi)
+            document.getElementById('recipient-name').innerText = recipientName;
+            document.getElementById('inner-recipient-name').innerText = recipientName;
+
+            // Setup Intersection Observer untuk animasi fade-up saat scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    }
+                });
+            }, { threshold: 0.1 }); // Muncul ketika 10% elemen terlihat
+
+            document.querySelectorAll('.fade-up').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+
+        // LOGIKA MEMBUKA UNDANGAN
+        const bgAudio = document.getElementById('bg-audio');
+        let isAudioPlaying = false;
+
+        function openInvitation() {
+            // Animasi cover naik
+            document.getElementById('cover-page').classList.add('opened');
+            
+            // Tampilkan konten utama
+            const mainContent = document.getElementById('main-content');
+            mainContent.classList.add('visible');
+            
+            // Munculkan tombol musik
+            document.getElementById('music-btn').classList.add('visible');
+
+            // Scroll ke paling atas konten (jaga-jaga)
+            mainContent.scrollTop = 0;
+
+            // Mulai mainkan musik
+            playMusic();
+        }
+
+        // LOGIKA AUDIO / MUSIK BACKGROUND
+        function playMusic() {
+            bgAudio.play().then(() => {
+                isAudioPlaying = true;
+                updateMusicIcon();
+            }).catch(error => {
+                console.log("Browser mencegah autoplay. Pengguna harus klik tombol musik.", error);
+                isAudioPlaying = false;
+                updateMusicIcon();
+            });
+        }
+
+        function toggleMusic() {
+            const musicBtn = document.getElementById('music-btn');
+            
+            if (isAudioPlaying) {
+                bgAudio.pause();
+                isAudioPlaying = false;
+                musicBtn.classList.add('paused');
+                document.getElementById('music-icon').classList.replace('ph-music-notes', 'ph-speaker-slash');
+            } else {
+                bgAudio.play();
+                isAudioPlaying = true;
+                musicBtn.classList.remove('paused');
+                document.getElementById('music-icon').classList.replace('ph-speaker-slash', 'ph-music-notes');
+            }
+        }
+
+        // LOGIKA SIMULASI SUBMIT RSVP
+        function submitRSVP(event) {
+            event.preventDefault(); // Mencegah reload halaman
+            
+            // Mengambil nilai form (bisa digunakan untuk dikirim ke Google Sheets via API nanti)
+            const formData = {
+                name: document.getElementById('name').value,
+                media: document.getElementById('media').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                attendance: document.getElementById('attendance').value,
+                pax: document.getElementById('pax').value,
+                notes: document.getElementById('notes').value
+            };
+            
+            console.log("Data RSVP (Siap dikirim ke API):", formData);
+
+            // Sembunyikan form
+            document.getElementById('rsvp-form').style.display = 'none';
+            // Tampilkan pesan sukses
+            document.getElementById('rsvp-success').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
