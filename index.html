@@ -310,39 +310,31 @@
         .cover-text {
             color: #F6B828;
         }
-
         .cover-undangan {
             color: #F6B828 !important;
         }
-
         .cover-title {
             color: #F6B828 !important;
             text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.35);
         }
-
         .cover-line {
             background-color: #F6B828 !important;
         }
-
         .cover-kepada {
             color: #F6B828 !important;
         }
-
         .cover-recipient {
             color: #F6B828 !important;
             text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.35);
         }
-
         .cover-open-button {
             color: #0A4326;
             background: #F6B828;
             border-color: #F6B828;
         }
-
         .cover-open-button i {
             color: #0A4326;
         }
-
         .cover-open-button:hover {
             background: #FFD34E;
             border-color: #FFD34E;
@@ -784,6 +776,19 @@
             document.getElementById('rsvp-form').style.display = 'none';
             // Tampilkan pesan sukses
             document.getElementById('rsvp-success').classList.remove('hidden');
+        }
+
+        function updateMusicIcon() {
+            const icon = document.getElementById('music-icon');
+            const musicBtn = document.getElementById('music-btn');
+        
+            if (isAudioPlaying) {
+                icon.className = 'ph-fill ph-music-notes';
+                musicBtn.classList.remove('paused');
+            } else {
+                icon.className = 'ph-fill ph-speaker-slash';
+                musicBtn.classList.add('paused');
+            }
         }
     </script>
 </body>
