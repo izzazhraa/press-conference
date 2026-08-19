@@ -635,7 +635,13 @@
                     Mohon konfirmasi kehadiran Anda untuk membantu kami mempersiapkan acara dengan sebaik-baiknya.
                 </p>
 
-                <form id="rsvp-form" onsubmit="submitRSVP(event)">
+                <form
+                    id="rsvp-form"
+                    action="https://script.google.com/macros/s/AKfycbwesDxhX90qJmcXx94-SBSuOfcgEykSGmymc9nmHceuP1SfV49FoWHG0QUzCPN5wA5T/exec"
+                    method="POST"
+                    target="hidden_iframe"
+                    onsubmit="handleRSVPSubmit(event)"
+                >
                     <input type="text" id="nama" name="nama" class="form-input" placeholder="Nama Lengkap" required>
                     <input type="text" id="media" name="media" class="form-input" placeholder="Institusi / Media" required>
                     <input type="tel" id="whatsapp" name="whatsapp" class="form-input" placeholder="Nomor WhatsApp" required>
@@ -756,6 +762,20 @@
                 musicBtn.classList.remove('paused');
                 document.getElementById('music-icon').classList.replace('ph-speaker-slash', 'ph-music-notes');
             }
+        }
+
+        // =====================================
+        // FUNGSI SUBMIT RSVP
+        // =====================================
+        function handleRSVPSubmit(event) {
+            const form = document.getElementById('rsvp-form');
+            const successMessage = document.getElementById('rsvp-success');
+            // Tampilkan pesan berhasil
+            successMessage.classList.remove('hidden');
+            // Kosongkan form setelah dikirim
+            setTimeout(function() {
+                form.reset();
+            }, 500);
         }
     </script>
 </body>
