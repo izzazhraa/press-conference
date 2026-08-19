@@ -636,23 +636,26 @@
                 </p>
 
                 <form id="rsvp-form" onsubmit="submitRSVP(event)">
-                    <input type="text" id="nama" class="form-input" placeholder="Nama Lengkap" required>
-                    <input type="text" id="media" class="form-input" placeholder="Institusi / Media" required>
-                    <input type="tel" id="whatsapp" class="form-input" placeholder="Nomor WhatsApp" required>
+                    <input type="text" id="nama" name="nama" class="form-input" placeholder="Nama Lengkap" required>
+                    <input type="text" id="media" name="media" class="form-input" placeholder="Institusi / Media" required>
+                    <input type="tel" id="whatsapp" name="whatsapp" class="form-input" placeholder="Nomor WhatsApp" required>
                     
-                    <select id="kehadiran" class="form-input" required>
+                    <select id="kehadiran" name="kehadiran" class="form-input" required>
                         <option value="" disabled selected>Konfirmasi Kehadiran</option>
                         <option value="hadir">Akan Hadir</option>
                         <option value="tidak">Tidak Hadir</option>
                     </select>
 
-                    <input type="number" id="pax" class="form-input" placeholder="Jumlah orang yang hadir (ex: 2)" min="1" max="5">
-                    <textarea id="catatan" class="form-input" rows="3" placeholder="Catatan Tambahan (Opsional)"></textarea>
+                    <input type="number" id="pax" name="pax" class="form-input" placeholder="Jumlah orang yang hadir (ex: 2)" min="1" max="20">
+                    <textarea id="catatan" name="catatan" class="form-input" rows="3" placeholder="Catatan Tambahan (Opsional)"></textarea>
 
                     <button type="submit" class="btn-elegant w-full mt-2">
                         Konfirmasi Kehadiran
                     </button>
                 </form>
+
+                <iframe name="hidden_iframe" style="display:none;"></iframe>
+                
                 
                 <!-- Pesan Sukses (Tersembunyi) -->
                 <div id="rsvp-success" class="hidden mt-4 p-3 bg-[#e8f5e9] text-[#2e7d32] rounded border border-[#c8e6c9] text-sm font-semibold">
@@ -754,40 +757,6 @@
                 document.getElementById('music-icon').classList.replace('ph-speaker-slash', 'ph-music-notes');
             }
         }
-
-            // =========================================
-            // KIRIM RSVP KE GOOGLE APPS SCRIPT
-            // =========================================
-
-            <form
-                id="rsvp-form"
-                action="https://script.google.com/macros/s/AKfycbwesDxhX90qJmcXx94-SBSuOfcgEykSGmymc9nmHceuP1SfV49FoWHG0QUzCPN5wA5T/exec"
-                method="POST"
-                target="hidden_iframe"
-            >
-                <input type="text" id="nama" name="nama" class="form-input" placeholder="Nama Lengkap" required>
-                <input type="text" id="media" name="media" class="form-input" placeholder="Institusi / Media" required>
-                <input type="tel" id="whatsapp" name="whatsapp" class="form-input" placeholder="Nomor WhatsApp" required>
-            
-                <select id="kehadiran" name="kehadiran" class="form-input" required>
-                    <option value="" disabled selected>Konfirmasi Kehadiran</option>
-                    <option value="hadir">Akan Hadir</option>
-                    <option value="tidak">Tidak Hadir</option>
-                </select>
-            
-                <input type="number" id="pax" name="pax" class="form-input" placeholder="Jumlah orang yang hadir (ex: 2)" min="1" max="5">
-                <textarea id="catatan" name="catatan" class="form-input" rows="3" placeholder="Catatan Tambahan (Opsional)"></textarea>
-                <button type="submit" class="btn-elegant w-full mt-2">
-                    Konfirmasi Kehadiran
-                </button>
-            </form>
-            
-            <iframe name="hidden_iframe" style="display:none;"></iframe>
-            
-            <!-- Pesan Sukses (Tersembunyi) -->
-            <div id="rsvp-success" class="hidden mt-4 p-3 bg-[#e8f5e9] text-[#2e7d32] rounded border border-[#c8e6c9] text-sm font-semibold">
-                <i class="ph-fill ph-check-circle mr-1 align-middle text-lg"></i> Terima kasih, konfirmasi kehadiran Anda telah diterima.
-            </div>
     </script>
 </body>
 </html>
