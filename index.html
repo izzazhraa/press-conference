@@ -759,51 +759,35 @@
             // KIRIM RSVP KE GOOGLE APPS SCRIPT
             // =========================================
 
-            function submitRSVP(event) {
-                event.preventDefault();
+            <form
+                id="rsvp-form"
+                action="https://script.google.com/macros/s/AKfycbwesDxhX90qJmcXx94-SBSuOfcgEykSGmymc9nmHceuP1SfV49FoWHG0QUzCPN5wA5T/exec"
+                method="POST"
+                target="hidden_iframe"
+            >
+                <input type="text" id="nama" name="nama" class="form-input" placeholder="Nama Lengkap" required>
+                <input type="text" id="media" name="media" class="form-input" placeholder="Institusi / Media" required>
+                <input type="tel" id="whatsapp" name="whatsapp" class="form-input" placeholder="Nomor WhatsApp" required>
             
-                const scriptURL = "https://script.google.com/macros/s/AKfycbyyWw-L_gZn-PSYgzytQyTXTyFki9WQPoFSMver_qjSJ6-NWqkKHreKzjuO0XxyjvvN/exec";
-                const formData = new URLSearchParams();
+                <select id="kehadiran" name="kehadiran" class="form-input" required>
+                    <option value="" disabled selected>Konfirmasi Kehadiran</option>
+                    <option value="hadir">Akan Hadir</option>
+                    <option value="tidak">Tidak Hadir</option>
+                </select>
             
-                formData.append("nama", document.getElementById("nama").value);
-                formData.append("media", document.getElementById("media").value);
-                formData.append("whatsapp", document.getElementById("whatsapp").value);
-                formData.append("kehadiran", document.getElementById("kehadiran").value);
-                formData.append("pax", document.getElementById("pax").value);
-                formData.append("catatan", document.getElementById("catatan").value);
+                <input type="number" id="pax" name="pax" class="form-input" placeholder="Jumlah orang yang hadir (ex: 2)" min="1" max="5">
+                <textarea id="catatan" name="catatan" class="form-input" rows="3" placeholder="Catatan Tambahan (Opsional)"></textarea>
+                <button type="submit" class="btn-elegant w-full mt-2">
+                    Konfirmasi Kehadiran
+                </button>
+            </form>
             
-                const button = document.querySelector("#rsvp-form button[type='submit']");
+            <iframe name="hidden_iframe" style="display:none;"></iframe>
             
-                // Ubah tombol sementara
-                button.disabled = true;
-                button.innerText = "MENGIRIM...";
-            
-                fetch(scriptURL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: formData.toString()
-                })
-                .then(() => {
-                    // Sembunyikan form
-                    document.getElementById("rsvp-form").style.display = "none";
-            
-                    // Tampilkan pesan berhasil
-                    document
-                        .getElementById("rsvp-success")
-                        .classList.remove("hidden");
-                })
-                .catch((error) => {
-                    console.error("Gagal mengirim RSVP:", error);
-            
-                    button.disabled = false;
-                    button.innerText = "Konfirmasi Kehadiran";
-            
-                    alert("RSVP gagal terkirim. Silakan coba lagi.");
-                });
-            }
+            <!-- Pesan Sukses (Tersembunyi) -->
+            <div id="rsvp-success" class="hidden mt-4 p-3 bg-[#e8f5e9] text-[#2e7d32] rounded border border-[#c8e6c9] text-sm font-semibold">
+                <i class="ph-fill ph-check-circle mr-1 align-middle text-lg"></i> Terima kasih, konfirmasi kehadiran Anda telah diterima.
+            </div>
     </script>
 </body>
 </html>
