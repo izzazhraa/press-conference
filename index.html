@@ -755,45 +755,55 @@
             }
         }
 
-        // LOGIKA SIMULASI SUBMIT RSVP
+            // =========================================
+            // KIRIM RSVP KE GOOGLE APPS SCRIPT
+            // =========================================
+
             function submitRSVP(event) {
                 event.preventDefault();
             
-                const formData = {
-                    name: document.getElementById('nama').value,
-                    media: document.getElementById('media').value,
-                    whatsapp: document.getElementById('whatsapp').value,
-                    attendance: document.getElementById('kehadiran').value,
-                    pax: document.getElementById('pax').value,
-                    notes: document.getElementById('catatan').value
-                };
-            
-                // GANTI DENGAN URL WEB APP APPS SCRIPT
                 const scriptURL = "https://script.google.com/macros/s/AKfycbyyWw-L_gZn-PSYgzytQyTXTyFki9WQPoFSMver_qjSJ6-NWqkKHreKzjuO0XxyjvvN/exec";
+                const formData = new URLSearchParams();
+            
+                formData.append("nama", document.getElementById("nama").value);
+                formData.append("media", document.getElementById("media").value);
+                formData.append("whatsapp", document.getElementById("whatsapp").value);
+                formData.append("kehadiran", document.getElementById("kehadiran").value);
+                formData.append("pax", document.getElementById("pax").value);
+                formData.append("catatan", document.getElementById("catatan").value);
+            
+                const button = document.querySelector("#rsvp-form button[type='submit']");
+            
+                // Ubah tombol sementara
+                button.disabled = true;
+                button.innerText = "MENGIRIM...";
             
                 fetch(scriptURL, {
                     method: "POST",
-                    body: JSON.stringify(formData)
+                    mode: "no-cors",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: formData.toString()
                 })
-                .then(response => response.json())
-                .then(result => {
+                .then(() => {
+                    // Sembunyikan form
+                    document.getElementById("rsvp-form").style.display = "none";
             
-                    console.log("Response Google Apps Script:", result);
-                    if (result.success) {
-                        
-                        /// HANYA tampilkan sukses jika data benar-benar berhasil disimpan
-                        document.getElementById('rsvp-form').style.display = 'none';
-                        document.getElementById('rsvp-success').classList.remove('hidden');
-                    } else {
-            
-                        alert("RSVP gagal dikirim: " + result.message);
-                    }
+                    // Tampilkan pesan berhasil
+                    document
+                        .getElementById("rsvp-success")
+                        .classList.remove("hidden");
                 })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("RSVP gagal dikirim. Silakan coba lagi.");
+                .catch((error) => {
+                    console.error("Gagal mengirim RSVP:", error);
+            
+                    button.disabled = false;
+                    button.innerText = "Konfirmasi Kehadiran";
+            
+                    alert("RSVP gagal terkirim. Silakan coba lagi.");
                 });
-            }          
+            }
     </script>
 </body>
 </html>
