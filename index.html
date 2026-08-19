@@ -757,19 +757,6 @@
         }
 
         // LOGIKA SIMULASI SUBMIT RSVP
-        function submitRSVP(event) {
-            event.preventDefault(); // Mencegah reload halaman
-            
-            // Mengambil nilai form (bisa digunakan untuk dikirim ke Google Sheets via API nanti)
-            const formData = {
-                name: document.getElementById('name').value,
-                media: document.getElementById('media').value,
-                whatsapp: document.getElementById('whatsapp').value,
-                attendance: document.getElementById('attendance').value,
-                pax: document.getElementById('pax').value,
-                notes: document.getElementById('notes').value
-            };
-            
             function submitRSVP(event) {
                 event.preventDefault();
             
@@ -783,7 +770,7 @@
                 };
             
                 // GANTI DENGAN URL WEB APP APPS SCRIPT
-                const scriptURL = "https://script.google.com/u/0/home/projects/1cvCcduP4lqbOMHZ3i6lST-aro2JNY6rGdKu0BuL7S0bb77L_SMsTr8U7/edit";
+                const scriptURL = "https://script.google.com/macros/s/AKfycbyyWw-L_gZn-PSYgzytQyTXTyFki9WQPoFSMver_qjSJ6-NWqkKHreKzjuO0XxyjvvN/exec";
             
                 fetch(scriptURL, {
                     method: "POST",
@@ -794,11 +781,12 @@
             
                     console.log("Response Google Apps Script:", result);
                     if (result.success) {
-                        // Data berhasil masuk spreadsheet
+                        
+                        /// HANYA tampilkan sukses jika data benar-benar berhasil disimpan
                         document.getElementById('rsvp-form').style.display = 'none';
                         document.getElementById('rsvp-success').classList.remove('hidden');
                     } else {
-                        // Data gagal masuk
+            
                         alert("RSVP gagal dikirim: " + result.message);
                     }
                 })
@@ -807,6 +795,7 @@
                     alert("RSVP gagal dikirim. Silakan coba lagi.");
                 });
             }
+                        
 
             // Sembunyikan form
             document.getElementById('rsvp-form').style.display = 'none';
