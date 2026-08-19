@@ -774,28 +774,33 @@
                 event.preventDefault();
             
                 const formData = {
-                    name: document.getElementById('name').value,
+                    name: document.getElementById('nama').value,
                     media: document.getElementById('media').value,
                     whatsapp: document.getElementById('whatsapp').value,
-                    attendance: document.getElementById('attendance').value,
+                    attendance: document.getElementById('kehadiran').value,
                     pax: document.getElementById('pax').value,
-                    notes: document.getElementById('notes').value
+                    notes: document.getElementById('catatan').value
                 };
             
-                fetch("https://script.google.com/u/0/home/projects/1zUbFT191UEQzsAEDD9hCdKyAZo85adyGzMZJV8KCdeYSLnSOpFUhs-By/edit", {
+                // GANTI DENGAN URL WEB APP APPS SCRIPT
+                const scriptURL = "https://script.google.com/u/0/home/projects/1cvCcduP4lqbOMHZ3i6lST-aro2JNY6rGdKu0BuL7S0bb77L_SMsTr8U7/edit";
+            
+                fetch(scriptURL, {
                     method: "POST",
                     body: JSON.stringify(formData)
                 })
                 .then(response => response.json())
                 .then(result => {
             
+                    console.log("Response Google Apps Script:", result);
                     if (result.success) {
+                        // Data berhasil masuk spreadsheet
                         document.getElementById('rsvp-form').style.display = 'none';
                         document.getElementById('rsvp-success').classList.remove('hidden');
                     } else {
+                        // Data gagal masuk
                         alert("RSVP gagal dikirim: " + result.message);
                     }
-            
                 })
                 .catch(error => {
                     console.error("Error:", error);
