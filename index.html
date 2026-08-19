@@ -636,19 +636,18 @@
                 </p>
 
                 <form id="rsvp-form" onsubmit="submitRSVP(event)">
-                    <input type="text" id="name" class="form-input" placeholder="Nama Lengkap" required>
+                    <input type="text" id="nama" class="form-input" placeholder="Nama Lengkap" required>
                     <input type="text" id="media" class="form-input" placeholder="Institusi / Media" required>
                     <input type="tel" id="whatsapp" class="form-input" placeholder="Nomor WhatsApp" required>
                     
-                    <select id="attendance" class="form-input" required>
+                    <select id="kehadiran" class="form-input" required>
                         <option value="" disabled selected>Konfirmasi Kehadiran</option>
                         <option value="hadir">Akan Hadir</option>
                         <option value="tidak">Tidak Hadir</option>
                     </select>
 
                     <input type="number" id="pax" class="form-input" placeholder="Jumlah orang yang hadir (ex: 2)" min="1" max="5">
-                    
-                    <textarea id="notes" class="form-input" rows="3" placeholder="Catatan Tambahan (Opsional)"></textarea>
+                    <textarea id="catatan" class="form-input" rows="3" placeholder="Catatan Tambahan (Opsional)"></textarea>
 
                     <button type="submit" class="btn-elegant w-full mt-2">
                         Konfirmasi Kehadiran
@@ -794,14 +793,7 @@
                     console.error("Error:", error);
                     alert("RSVP gagal dikirim. Silakan coba lagi.");
                 });
-            }
-                        
-
-            // Sembunyikan form
-            document.getElementById('rsvp-form').style.display = 'none';
-            // Tampilkan pesan sukses
-            document.getElementById('rsvp-success').classList.remove('hidden');
-        }
+            }          
     </script>
 </body>
 </html>
