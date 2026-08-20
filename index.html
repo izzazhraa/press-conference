@@ -635,7 +635,7 @@
                     Mohon konfirmasi kehadiran Anda untuk membantu kami mempersiapkan acara dengan sebaik-baiknya.
                 </p>
 
-                <form id="rsvp-form">
+                <form id="rsvp-form" onsubmit="handleRSVPSubmit(event)">
                     <input type="text" id="nama" name="nama" class="form-input" placeholder="Nama Lengkap" required>
                     <input type="text" id="media" name="media" class="form-input" placeholder="Institusi / Media" required>
                     <input type="tel" id="whatsapp" name="whatsapp" class="form-input" placeholder="Nomor WhatsApp" required>
