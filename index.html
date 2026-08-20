@@ -635,13 +635,7 @@
                     Mohon konfirmasi kehadiran Anda untuk membantu kami mempersiapkan acara dengan sebaik-baiknya.
                 </p>
 
-                <form
-                    id="rsvp-form"
-                    action="https://script.google.com/macros/s/AKfycbwesDxhX90qJmcXx94-SBSuOfcgEykSGmymc9nmHceuP1SfV49FoWHG0QUzCPN5wA5T/exec"
-                    method="POST"
-                    target="hidden_iframe"
-                    onsubmit="handleRSVPSubmit(event)"
-                >
+                <form id="rsvp-form">
                     <input type="text" id="nama" name="nama" class="form-input" placeholder="Nama Lengkap" required>
                     <input type="text" id="media" name="media" class="form-input" placeholder="Institusi / Media" required>
                     <input type="tel" id="whatsapp" name="whatsapp" class="form-input" placeholder="Nomor WhatsApp" required>
@@ -659,9 +653,6 @@
                         Konfirmasi Kehadiran
                     </button>
                 </form>
-
-                <iframe name="hidden_iframe" style="display:none;"></iframe>
-                
                 
                 <!-- Pesan Sukses (Tersembunyi) -->
                 <div id="rsvp-success" class="hidden mt-4 p-3 bg-[#e8f5e9] text-[#2e7d32] rounded border border-[#c8e6c9] text-sm font-semibold">
@@ -767,15 +758,57 @@
         // =====================================
         // FUNGSI SUBMIT RSVP
         // =====================================
-        function handleRSVPSubmit(event) {
+        async function handleRSVPSubmit(event) {
+            event.preventDefault();
+        
             const form = document.getElementById('rsvp-form');
             const successMessage = document.getElementById('rsvp-success');
-            // Tampilkan pesan berhasil
-            successMessage.classList.remove('hidden');
-            // Kosongkan form setelah dikirim
-            setTimeout(function() {
-                form.reset();
-            }, 500);
+            const submitButton = form.querySelector('button[type="submit"]');
+        
+            // URL Web App Google Apps Script
+            const scriptURL = "https://script.google.com/macros/s/AKfycbwjoSbeIFstZw_eXkXzf2QU19IAJJjA1S9fSDpM_R45O7z1ib6A-4KISKayILFqRwzP/exec";
+        
+            // Ambil data form
+            const formData = new FormData(form);
+        
+            // Ubah status tombol
+            submitButton.disabled = true;
+            submitButton.innerText = "Mengirim...";
+        
+            try {
+                const response = await fetch(scriptURL, {
+                    method: "POST",
+                    body: new URLSearchParams(formData)
+                });
+                const resultText = await response.text();
+                console.log("Response Apps Script:", resultText);
+                // Jika Apps Script mengembalikan SUCCESS
+                if (
+                    resultText.includes("SUCCESS") ||
+                    resultText.includes('"success":true')
+                ) {
+                    successMessage.classList.remove('hidden');
+                    form.reset();
+                    setTimeout(function() {
+                        successMessage.classList.add('hidden');
+                    }, 5000);
+        
+                } else {
+                    alert(
+                        "Data belum berhasil dikirim.\n\n" +
+                        "Silakan coba lagi."
+                    );
+                }
+            } catch (error) {
+                console.error("Error RSVP:", error);
+                alert(
+                    "Terjadi masalah saat mengirim RSVP.\n\n" +
+                    "Pastikan koneksi internet stabil lalu coba lagi."
+                );
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerText = "Konfirmasi Kehadiran";
+            }
         }
     </script>
 </body>
